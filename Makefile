@@ -8,7 +8,7 @@ OBJCOPY =	${CROSS_COMPILE}objcopy
 LDSCRIPT =	${.CURDIR}/ldscript
 
 OBJECTS =	main.o						\
-		osfive/sys/arm/nordicsemi/nrf52_uarte.o		\
+		osfive/sys/arm/nordicsemi/nrf_uarte.o		\
 		osfive/sys/arm/arm/nvic.o			\
 		osfive/sys/arm/arm/trap.o			\
 		osfive/sys/arm/arm/exception.o			\
@@ -17,17 +17,15 @@ OBJECTS =	main.o						\
 		osfive/sys/kern/kern_panic.o			\
 		start.o
 
-.include "osfive/lib/libc/Makefile.inc"
+LIBRARIES =	LIBC
 
 CFLAGS =	-mthumb -mcpu=cortex-m4		\
 		-nostdlib -fno-builtin-printf	\
 		-g -Wall -Werror
 
-all:	compile link
+all:	__compile __link
 
-clean:
-	rm -f ${OBJECTS:M*} ${APP}.elf
+clean:	__clean
 
-.include "osfive/mk/user.mk"
-.include "osfive/mk/compile.mk"
-.include "osfive/mk/link.mk"
+.include "osfive/lib/libc/Makefile.inc"
+.include "osfive/mk/bsd.mk"
