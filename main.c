@@ -28,6 +28,7 @@
 #include <sys/console.h>
 #include <sys/systm.h>
 #include <sys/malloc.h>
+#include <sys/thread.h>
 
 #include <machine/frame.h>
 
@@ -58,6 +59,10 @@ uart_putchar(int c, void *arg)
 void
 app_main(void)
 {
+
+	zero_bss();
+	relocate_data();
+	md_init();
 
 	uarte_init(&uarte_sc, UART_BASE, UART_PIN_TX,
 	    UART_PIN_RX, UART_BAUDRATE);
